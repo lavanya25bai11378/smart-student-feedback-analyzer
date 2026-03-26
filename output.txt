@@ -1,0 +1,21 @@
+Predictions:
+
+Feedback: The course was very interesting and helpful
+Actual: Positive
+Predicted: Positive
+
+Feedback: Some topics were confusing and hard to follow
+Actual: Negative
+Predicted: Negative
+
+Feedback: I liked the practical exercises they helped a lot
+Actual: Positive
+Predicted: Positive
+
+Feedback: Assignments were too challenging for the time given
+Actual: Negative
+Predicted: Negative
+
+Feedback: Overall a good learning experience
+Actual: Positive
+Predicted: Positive
