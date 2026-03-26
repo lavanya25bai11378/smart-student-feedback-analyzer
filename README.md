@@ -18,7 +18,5 @@ This project automatically analyzes student feedback and classifies it as Positi
 - **Visualization:** Clear visual outputs for decision-making
 
 ## Installation
-1. Install Python 3.x
-2. Install required libraries:
-```bash
-pip install pandas scikit-learn nltk matplotlib wordcloud
+- Install Python 3.x
+
