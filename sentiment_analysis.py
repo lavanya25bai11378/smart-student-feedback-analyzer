@@ -1,59 +1,39 @@
-import pandas as pd
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import classification_report
-import matplotlib.pyplot as plt
-from wordcloud import WordCloud
+data = [
+    ("The course was very interesting and helpful", "Positive"),
+    ("Some topics were confusing and hard to follow", "Negative"),
+    ("I liked the practical exercises they helped a lot", "Positive"),
+    ("Assignments were too challenging for the time given", "Negative"),
+    ("Overall a good learning experience", "Positive")
+]
 
-data = pd.read_csv('feedback_data.csv')
+positive_words = ["good", "interesting", "helpful", "liked", "useful", "great"]
+negative_words = ["confusing", "hard", "challenging", "difficult", "boring"]
 
-print("Preview of feedback data:")
-print(data.head())
+def predict_sentiment(text):
+    text = text.lower()
+    pos_count = 0
+    neg_count = 0
 
-X = data['feedback_text']
-y = data['sentiment']
+    for word in positive_words:
+        if word in text:
+            pos_count += 1
 
-vectorizer = TfidfVectorizer(stop_words='english')
-X_vectorized = vectorizer.fit_transform(X)
+    for word in negative_words:
+        if word in text:
+            neg_count += 1
 
-X_train, X_test, y_train, y_test = train_test_split(
-    X_vectorized, y, test_size=0.2, random_state=42
-)
+    if pos_count > neg_count:
+        return "Positive"
+    elif neg_count > pos_count:
+        return "Negative"
+    else:
+        return "Neutral"
 
-model = MultinomialNB()
-model.fit(X_train, y_train)
+print("Predictions:\n")
 
-y_pred = model.predict(X_test)
-print("\nClassification Report:")
-print(classification_report(y_test, y_pred))
-
-sentiment_counts = data['sentiment'].value_counts()
-plt.figure(figsize=(6,6))
-plt.pie(
-    sentiment_counts,
-    labels=sentiment_counts.index,
-    autopct='%1.1f%%',
-    colors=['green','gray','red']
-)
-plt.title('Student Feedback Sentiment Distribution')
-plt.show()
-
-positive_text = " ".join(data[data['sentiment']=='Positive']['feedback_text'])
-wordcloud = WordCloud(
-    width=800,
-    height=400,
-    background_color='white'
-).generate(positive_text)
-
-plt.figure(figsize=(10,5))
-plt.imshow(wordcloud, interpolation='bilinear')
-plt.axis('off')
-plt.title('Common Words in Positive Feedback')
-plt.show()
-
-print("\n--- Try your own feedback ---")
-user_feedback = input("Enter your feedback: ")
-user_vector = vectorizer.transform([user_feedback])
-prediction = model.predict(user_vector)[0]
-print(f"Predicted Sentiment: {prediction}")
+for feedback, actual in data:
+    predicted = predict_sentiment(feedback)
+    print("Feedback:", feedback)
+    print("Actual:", actual)
+    print("Predicted:", predicted)
+    print()
